@@ -36,6 +36,22 @@ function addTodo(content) {
     console.log(`Todo가 추가되었습니다: "${content}"`);
 }   
 
+function listTodos() {
+    const todos = getTodos();
+    if (todos.length === 0) {
+        console.log("Todo가 없습니다.");
+        return;
+    }
+
+    todos.forEach((todo) => {
+        const status = todo.done ? '[x]' : '[ ]';
+
+        console.log(`${status} ${todo.id}. ${todo.content}`);
+    });
+}
+
+// 명령어 처리
+
 const command = process.argv[2];
 const argument = process.argv[3];
 if (command === 'add') {
@@ -44,6 +60,8 @@ if (command === 'add') {
     } else {
         addTodo(argument);
     }
+} else if (command === 'list') {
+    listTodos();
 } else {
     console.log('알 수 없는 명령어입니다. 현재 지원되는 명령어: add');
 }

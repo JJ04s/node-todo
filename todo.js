@@ -45,7 +45,20 @@ TODO list 조회
 완료된 항목은 [x]
 Todo가 없으면 "Todo가 없습니다."
 */
-function list_todo(){}
+function list_todo(){
+
+    const todos = read_todos();
+
+    if (todos.length === 0) {
+        console.log(`Todo가 없습니다.`);
+        return
+    }
+
+    todos.forEach(todo => {
+        const box = todo.done ? `[x]` : `[ ]`;
+        console.log(`${box} ${todo.id}. ${todo.content}`);
+    })
+}
 
 /*
 완료 처리

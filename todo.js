@@ -1,12 +1,43 @@
 import fs from 'node:fs';
 
+const FILE_NAME = "todos.json"
+
+// read file, if none, return []
+function read_todos() {
+    try {
+        const data = fs.readFileSync(FILE_NAME, 'utf-8');
+        return JSON.parse(data);
+    } catch {
+        return [];
+    }
+}
+
+// write file 
+function write_todos(todos){
+    fs.writeFileSync(FILE_NAME, JSON.stringify(todos, null, 2));
+}
+
 /* 
 TODO list 추가
 추가된 Todo는 고유 ID(1부터 순차 증가)
 추가 후 "Todo가 추가되었습니다: [내용]" 출력
 */
 
-function add_todo(){}
+function add_todo(content){
+
+    const todos = read_todos();
+
+    if (todos.length===0) {
+        const add_id = 1;
+    } else {
+        const add_id = Math.max(...todos.map(todo => todo.id)) +1;
+    }
+
+    todos.push({ id: add_id, "content": content, done: false });
+    write_todos(todos);
+
+    console.log(`Todo가 추가되었습니다: ${content}`);
+}
 
 /* 
 TODO list 조회

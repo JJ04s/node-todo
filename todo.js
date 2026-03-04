@@ -37,3 +37,19 @@ function addTodo(content) {
   saveTodos(todos);
   console.log(`Todo가 추가되었습니다: ${content}`);
 }
+
+// Print all todos
+function listTodos() {
+  const todos = loadTodos();
+  
+  if (todos.length === 0) {
+    console.log("Todo가 없습니다.");
+    return;
+  }
+  
+  todos.forEach(todo => {
+    // Check status and format output
+    const statusBox = todo.done ? '[x]' : '[ ]';
+    console.log(`${statusBox} ${todo.id}. ${todo.content}`);
+  });
+}

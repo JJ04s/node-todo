@@ -53,3 +53,21 @@ function listTodos() {
     console.log(`${statusBox} ${todo.id}. ${todo.content}`);
   });
 }
+
+// Mark a todo as completed
+function doneTodo(id) {
+  const todos = loadTodos();
+  const targetId = parseInt(id, 10);
+  
+  // Find the target todo by ID
+  const todo = todos.find(t => t.id === targetId);
+  
+  if (!todo) {
+    console.log("해당 ID를 찾을 수 없습니다.");
+    return;
+  }
+  
+  todo.done = true;
+  saveTodos(todos);
+  console.log(`ID ${targetId}번 항목이 완료되었습니다.`);
+}

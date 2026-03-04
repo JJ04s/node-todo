@@ -71,3 +71,65 @@ function doneTodo(id) {
   saveTodos(todos);
   console.log(`ID ${targetId}번 항목이 완료되었습니다.`);
 }
+
+// Delete a todo
+function deleteTodo(id) {
+  let todos = loadTodos();
+  const targetId = parseInt(id, 10);
+  const initialLength = todos.length;
+  
+  todos = todos.filter(t => t.id !== targetId);
+  
+  if (todos.length === initialLength) {
+    console.log("해당 ID를 찾을 수 없습니다.");
+    return;
+  }
+  
+  saveTodos(todos);
+  console.log(`ID ${targetId}번 항목이 삭제되었습니다.`);
+}
+
+// Update todo content
+function updateTodo(id, newContent) {
+  const todos = loadTodos();
+  const targetId = parseInt(id, 10);
+  
+  const todo = todos.find(t => t.id === targetId);
+  
+  if (!todo) {
+    console.log("해당 ID를 찾을 수 없습니다.");
+    return;
+  }
+  
+  todo.content = newContent;
+  saveTodos(todos);
+  console.log(`ID ${targetId}번 항목의 내용이 변경되었습니다.`);
+}
+
+// CLI Command Router
+const args = process.argv.slice(2);
+const command = args[0];
+
+switch (command) {
+  case 'add':
+    if (args[1]) addTodo(args[1]);
+    else console.log("내용을 입력해주세요. 예) node todo.js add \"장보기\"");
+    break;
+  case 'list':
+    listTodos();
+    break;
+  case 'done':
+    if (args[1]) doneTodo(args[1]);
+    else console.log("ID를 입력해주세요. 예) node todo.js done 1");
+    break;
+  case 'delete':
+    if (args[1]) deleteTodo(args[1]);
+    else console.log("ID를 입력해주세요. 예) node todo.js delete 1");
+    break;
+  case 'update':
+    if (args[1] && args[2]) updateTodo(args[1], args[2]);
+    else console.log("ID와 변경할 내용을 입력해주세요. 예) node todo.js update 1 \"새 내용\"");
+    break;
+  default:
+    console.log("지원하지 않는 명령어입니다. (add, list, done, delete, update)");
+}

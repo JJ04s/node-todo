@@ -66,7 +66,19 @@ done [ID] 명령
 처리 후 "[ID]번 항목이 완료되었습니다." 메시지 출력
 존재하지 않는 ID의 경우 "해당 ID를 찾을 수 없습니다." 출력
 */
-function done_todo(){}
+function done_todo(id){
+    const todos = read_todos();
+    const target = todos.find(todo => todo.id === Number(id));
+
+    if (!target) {
+        console.log(`해당 ID를 찾을 수 없습니다.`);
+        return;
+    }
+
+    target.done = true;
+    write_todos(todos);
+    console.log(`${id}번 항목이 완료되었습니다.`);
+}
 
 /*
 삭제 기능

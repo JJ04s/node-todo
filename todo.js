@@ -63,6 +63,19 @@ function doneTodo(id) {
     saveTodos(todos);
     console.log(`ID ${id}번 항목이 완료되었습니다.`);
 }
+
+function deleteTodo(id) {
+    const todos = getTodos();
+    const newTodos = todos.filter((item) => item.id !== Number(id));
+
+    if (todos.length === newTodos.length) {
+        console.log("해당 ID를 찾을 수 없습니다.");
+        return;
+    }
+
+    saveTodos(newTodos);
+    console.log(`ID ${id}번 항목이 삭제되었습니다.`);
+}
 // 명령어 처리
 
 const command = process.argv[2];
@@ -80,6 +93,12 @@ if (command === 'add') {
         console.log('완료 처리할할 ID를 입력해주세요. 예: node todo.js done 1');
     } else {
         doneTodo(argument);
+    }
+} else if (command === 'delete') {
+    if (!argument) {
+        console.log('삭제할 ID를 입력해주세요. 예: node todo.js delete 1');
+    } else {
+        deleteTodo(argument);
     }
 } else {
     console.log('알 수 없는 명령어입니다. 현재 지원되는 명령어: add, list, done');

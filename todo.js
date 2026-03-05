@@ -1,5 +1,5 @@
 import fs from 'node:fs';
-const FILE_NAME = 'todo.json';
+const FILE_NAME = 'todos.json';
 
 function getTodos() {
     try {
@@ -50,6 +50,19 @@ function listTodos() {
     });
 }
 
+function doneTodo(id) {
+    const todos = getTodos();
+    const todo = todos.find((item) => item.id === Number(id));
+
+    if(!todo) {
+        console.log("해당 ID를 찾을 수 없습니다.");
+        return;
+    }
+
+    todo.done = true;
+    saveTodos(todos);
+    console.log(`ID ${id}번 항목이 완료되었습니다.`);
+}
 // 명령어 처리
 
 const command = process.argv[2];
@@ -62,6 +75,12 @@ if (command === 'add') {
     }
 } else if (command === 'list') {
     listTodos();
+} else if (command === 'done') {
+    if (!argument) {
+        console.log('완료 처리할할 ID를 입력해주세요. 예: node todo.js done 1');
+    } else {
+        doneTodo(argument);
+    }
 } else {
-    console.log('알 수 없는 명령어입니다. 현재 지원되는 명령어: add');
+    console.log('알 수 없는 명령어입니다. 현재 지원되는 명령어: add, list, done');
 }

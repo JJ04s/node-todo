@@ -76,7 +76,7 @@ function addToDo(content){ // 새로운 To Do 추가하는 함수. 고유한 ID 
 function listToDos(){ // 전체 To Do 목록을 출력하는 함수
     let num = todos.length;
 
-    if (num == 0){
+    if (num === 0){
         console.log("Todo가 없습니다.");
         return;
     }
@@ -89,11 +89,24 @@ function listToDos(){ // 전체 To Do 목록을 출력하는 함수
     }
 }
 
-/*
-function doneToDo(id){ // 특정 항목을 완료 상태로 변경하는 함수
 
+function doneToDo(id){ // 특정 항목을 완료 상태로 변경하는 함수
+    const idNum = Number(id);
+    const target = todos.find((todo) => todo.id === idNum);
+
+    if (!target){
+        console.log("해당 ID를 찾을 수 없습니다.");
+        return;
+    }
+    else{
+        target.done = true;
+        const updatedData = JSON.stringify(todos, null, 2);
+        fs.writeFileSync("todos.json", updatedData, "utf-8"); // 전체 덮어쓰기
+        console.log(`ID ${idNum}번 항목이 완료되었습니다.`);
+    }
 }
 
+/*
 function deleteToDo(id){ // 특정 항목을 삭제하는 함수
 
 }
@@ -101,5 +114,4 @@ function deleteToDo(id){ // 특정 항목을 삭제하는 함수
 function updateToDo(id, content){ // 특정 항목 내용을 변경하는 함수 
 
 }
-
 */

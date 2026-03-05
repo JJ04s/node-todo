@@ -7,11 +7,29 @@ export default function createTodoService(db) {
         done: false,
       });
 
-      console.log(`Todo가 추가되었습니다: ${content}`);
+      return {
+        mutated: true,
+        message: `Todo가 추가되었습니다: ${content}`,
+      };
     },
 
     deleteTodo({ id: targetTodoId }) {
-      db.todos = db.todos.filter((todo) => todo.id !== targetTodoId);
+      const targetTodoIndex = db.todos.findIndex(
+        (todo) => todo.id === targetTodoId,
+      );
+
+      if (targetTodoIndex === -1) {
+        return {
+          mutated: false,
+          message: "해당 ID를 찾을 수 없습니다.",
+        };
+      }
+
+      db.todos.splice(targetTodoIndex, 1);
+      return {
+        mutated: true,
+        message: `ID ${targetTodoId}번 항목이 삭제되었습니다.`,
+      };
     },
 
     updateTodo({ id: targetTodoId, content: updatedContent }) {
@@ -19,8 +37,15 @@ export default function createTodoService(db) {
 
       if (targetTodo) {
         targetTodo.content = updatedContent;
+        return {
+          mutated: true,
+          message: `ID ${targetTodoId}번 항목이 수정되었습니다.`,
+        };
       } else {
-        console.log("해당 ID를 찾을 수 없습니다.");
+        return {
+          mutated: false,
+          message: "해당 ID를 찾을 수 없습니다.",
+        };
       }
     },
 
@@ -29,22 +54,34 @@ export default function createTodoService(db) {
 
       if (targetTodo) {
         targetTodo.done = true;
+        return {
+          mutated: true,
+          message: `ID ${targetTodoId}번 항목이 완료되었습니다.`,
+        };
       } else {
-        console.log("해당 ID를 찾을 수 없습니다.");
+        return {
+          mutated: false,
+          message: "해당 ID를 찾을 수 없습니다.",
+        };
       }
     },
 
     showTodos() {
       if (db.todos.length === 0) {
-        console.log("Todo가 없습니다.");
-        return;
+        return {
+          mutated: false,
+          message: "Todo가 없습니다.",
+        };
       }
 
       const todoList = db.todos
         .map((todo) => `[${todo.done ? "X" : " "}] ${todo.id}. ${todo.content}`)
         .join("\n");
 
-      console.log(todoList);
+      return {
+        mutated: false,
+        message: todoList,
+      };
     },
   };
 }

@@ -83,11 +83,24 @@ function done_todo(id){
 /*
 삭제 기능
 delete [ID]
-delete는 reserved word인데 어떻게 하지?
-process.argv[] 사용자 입력 명령어를 배열로 담아준다.
 */
 
-function delete_todo(){}
+function delete_todo(id){
+    const todos = read_todos();
+    const remain = todos.filter(todo => todo.id !== Number(id));
+// id가 없을 경우
+    if (remain.length === todos.length) {
+        console.log(`해당 ID를 찾을 수 없습니다.`);
+        return;
+    }
+
+    const reindex = remain.map((todo, index) => ({ ...todo,
+        id: index +1}));
+
+    write_todos(reindex);
+    console.log(`${id}번 항목이 삭제되었습니다.`);
+
+}
 
 /*
 내용 변경 기능

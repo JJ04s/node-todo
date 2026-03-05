@@ -106,10 +106,30 @@ function delete_todo(id){
 내용 변경 기능
 update [ID] "새 내용" 명령으로 내용 수정
 */
-function update_todo(){}
+function update_todo(id, content){
+    const todos = read_todos();
+    const target = todos.find(todo => todo.id === Number(id));
 
-const commands = {}
+    if (!target) {
+        console.log(`해당 ID를 찾을 수 없습니다.`);
+        return;
+    }
 
+    target.content = content;
+    write_todos(todos);
+    console.log(`${id}번 항목이 수정되었습니다.`);
+}
+
+const commands = {
+    add: add_todo,
+    list: list_todo,
+    done: done_todo,
+    delete: delete_todo,
+    update: update_todo,
+};
+  
 const command = process.argv[2];
 const id = process.argv[3];
 const content = process.argv[4];
+  
+commands[command]?.(id, content);

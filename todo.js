@@ -27,11 +27,7 @@ function add_todo(content){
 
     const todos = read_todos();
 
-    if (todos.length===0) {
-        const add_id = 1;
-    } else {
-        const add_id = Math.max(...todos.map(todo => todo.id)) +1;
-    }
+    const add_id = todos.length === 0 ? 1 : Math.max(...todos.map(todo => todo.id)) + 1;
 
     todos.push({ id: add_id, "content": content, done: false });
     write_todos(todos);

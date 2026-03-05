@@ -1,12 +1,7 @@
 [
   {
-    "id": 1,
-    "content": "헬스장가기",
-    "done": false
-  },
-  {
     "id": 2,
-    "content": "뭐 임마",
+    "content": "안녕하세요",
     "done": true
   }
 ]

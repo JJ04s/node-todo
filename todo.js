@@ -11,12 +11,12 @@ catch (error){
 }
 
 const command = process.argv[2];
-const taskOrId = process.argv[3];
 
 switch(command){
     case "add":
+        const addContent = process.argv.slice(3).join(" ");
         //addToDo 함수 실행
-        addToDo(taskOrId);
+        addToDo(addContent);
         break;
     
     case "list":
@@ -25,19 +25,22 @@ switch(command){
         break;
 
     case "done":
+        const doneId = Number(process.argv[3]);
         //doneToDo 함수 실행
-        doneToDo(taskOrId);
+        doneToDo(doneId);
         break;
 
     case "delete":
+        const deleteId = Number(process.argv[3]);
         // deleteToDo 함수 실행
-        deleteToDo(taskOrId);
+        deleteToDo(deleteId);
         break;
 
     case "update":
+        const updateId = Number(process.argv[3]);
         // updateToDo 함수 실행
-        const newContent = process.argv[4];
-        updateToDo(id, newContent);
+        const newContent = process.argv.slice(4).join(" ");
+        updateToDo(updateId, newContent);
         break;
 
     default:
@@ -106,12 +109,35 @@ function doneToDo(id){ // 특정 항목을 완료 상태로 변경하는 함수
     }
 }
 
-/*
-function deleteToDo(id){ // 특정 항목을 삭제하는 함수
+function deleteToDo(id){ // 특정 항목을 삭제하는 함수. doneToDo 함수와 로직 유사함
+    const idNum = Number(id);
+    const target = todos.find((todo) => todo.id === idNum);
 
+    if (!target){
+        console.log("해당 ID를 찾을 수 없습니다.");
+        return;
+    }
+    else{
+        const updatedTodos = todos.filter(todo => todo.id !== idNum);
+        const updatedData = JSON.stringify(updatedTodos, null, 2);
+        fs.writeFileSync("todos.json", updatedData, "utf-8"); // 전체 덮어쓰기
+        console.log(`ID ${idNum}번 항목이 삭제되었습니다.`);
+    }
 }
+
 
 function updateToDo(id, content){ // 특정 항목 내용을 변경하는 함수 
+    const idNum = Number(id);
+    const target = todos.find((todo) => todo.id === idNum);
 
+    if (!target){
+        console.log("해당 ID를 찾을 수 없습니다.");
+        return;
+    }
+    else{
+        target.content = content;
+        const updatedData = JSON.stringify(todos, null, 2);
+        fs.writeFileSync("todos.json", updatedData, "utf-8"); // 전체 덮어쓰기
+        console.log(`ID ${idNum}번 항목이 수정되었습니다.`);
+    }
 }
-*/

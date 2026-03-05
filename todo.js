@@ -4,8 +4,12 @@ import argParser from "./argParser.js";
 
 const [, , command, ...args] = process.argv;
 
-const data = fs.readFileSync("todos.json", "utf8");
-const db = JSON.parse(data);
+let db;
+try {
+  db = JSON.parse(fs.readFileSync("todos.json", "utf8"));
+} catch {
+  db = { nextId: 1, todos: [] };
+}
 
 const todoService = createTodoService(db);
 const commandHandler = {

@@ -74,9 +74,22 @@ function addToDo(content){ // 새로운 To Do 추가하는 함수. 고유한 ID 
 }
 
 function listToDos(){ // 전체 To Do 목록을 출력하는 함수
+    let num = todos.length;
 
+    if (num == 0){
+        console.log("Todo가 없습니다.");
+        return;
+    }
+    else{
+        for (const todo of todos){
+            const mark = todo.done ? "[x]" : "[ ]";
+            console.log(`${mark} ${todo.id}. ${todo.content}`);
+        }
+        return;
+    }
 }
 
+/*
 function doneToDo(id){ // 특정 항목을 완료 상태로 변경하는 함수
 
 }
@@ -88,3 +101,5 @@ function deleteToDo(id){ // 특정 항목을 삭제하는 함수
 function updateToDo(id, content){ // 특정 항목 내용을 변경하는 함수 
 
 }
+
+*/

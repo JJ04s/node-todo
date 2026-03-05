@@ -1,4 +1,10 @@
 {
-  "nextId": 1,
-  "todos": []
+  "nextId": 2,
+  "todos": [
+    {
+      "id": 1,
+      "content": "밥 먹기",
+      "done": false
+    }
+  ]
 }

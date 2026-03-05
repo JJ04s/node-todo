@@ -18,8 +18,6 @@ export default function argParser(command, args) {
       break;
     case "list":
       break;
-    default:
-      console.log("알 수 없는 command입니다.");
   }
 
   return parsedArgs;

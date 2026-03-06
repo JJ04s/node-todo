@@ -42,6 +42,11 @@ switch (command) {
     case 'list':
         listTodos();
         break;
+    case 'done':
+        const id = input[1];
+        done(id);
+        break;
+
 }
 
 // 할 일 추가 함수
@@ -68,4 +73,21 @@ function listTodos() {
 // 목록 출력 시 포맷팅 함수
 function formatTodo(todo) {
     return `[${todo.done ? ' ' : 'x'}] ${todo.id}. ${todo.content}`;
+}
+
+// 완료 함수
+function done(id) {
+    const index = todos.findIndex((todo) => todo.id === parseInt(id));
+    // 사용자의 입력은 항상 문자열이지만
+    // JSON.parse 에선 속성의 값이 숫자일 경우, 알아서 int로 변환한다. 
+
+    if (index === -1) {
+        console.log("해당 ID를 찾을 수 없습니다.");
+        return;
+    } else {
+        todos[index].done = true;
+        fs.writeFileSync(filePath, JSON.stringify(todos, null, 2));
+        console.log(`ID ${id}번 항목이 완료되었습니다.`);
+        return;
+    }
 }

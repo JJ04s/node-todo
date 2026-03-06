@@ -4,7 +4,6 @@ const args = process.argv;
 const command = args[2];
 const text = args[3];
 const text2 = args[4];
-let id = 1;
 
 let todos = [];
 try {
@@ -16,8 +15,16 @@ try {
     todos = [];
 }
 if (command === 'add') {
+    let newID;
+
+    if (todos.length === 0) { //todos가 비어있다면 id는 1부터 시작
+        newID = 1; 
+    } else {
+        newID = todos[todos.length - 1].id + 1;
+    }
+    
     const newTodo = {
-        id: id++, content : text, done : false
+        id: newID, content : text, done : false
     };
     todos.push(newTodo); // newTodo 객체를 todos 배열에 추가
 
@@ -39,10 +46,10 @@ if (command === 'add') {
             const todo = todoslist.shift(); //todoslist의 요소를 todo에 전달하고 삭제
             const status = todo.done 
             if(status === true) {
-                console.log('[x] ' + id.toString() + '. ' + todo.content);
+                console.log('[x] ' + todo.id.toString() + '. ' + todo.content);
             }
             else {
-                console.log('[ ] ' + id.toString() + '. ' + todo.content);
+                console.log('[ ] ' + todo.id.toString() + '. ' + todo.content);
             }
         }
     }

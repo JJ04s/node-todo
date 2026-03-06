@@ -54,11 +54,30 @@ function addTodo(content) {
   console.log(`Todo가 추가되었습니다: ${newTodo.content}`);
 }
 
+function listTodos() {
+  const todos = readTodos();
+
+  if (todos.length === 0) {
+    console.log('Todo가 없습니다.');
+    return;
+  }
+
+  todos.forEach((todo) => {
+    const status = todo.done ? '[x]' : '[ ]';
+    console.log(`${status} ${todo.id}. ${todo.content}`);
+  });
+}
+
 function main() {
   const [, , command, ...args] = process.argv;
 
   if (command === 'add') {
     addTodo(args.join(' '));
+    return;
+  }
+
+  if (command === 'list') {
+    listTodos();
     return;
   }
 }

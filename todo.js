@@ -37,16 +37,35 @@ let id = todos.length > 0 ? todos.length : 1;
 switch (command) {
     case 'add':
         const task = input.slice(1).join(' ');
-        addTask(task);
+        addTodo(task);
+        break;
+    case 'list':
+        listTodos();
         break;
 }
 
 // 할 일 추가 함수
-function addTask(task) {
+function addTodo(task) {
     todos.push({
         id: ++id,
         content: task,
         done: false
     });
     fs.writeFileSync(filePath, JSON.stringify(todos, null, 2));
+}
+
+// 할 일 목록 출력 함수
+function listTodos() {
+    if (todos.length === 0) {
+        console.log("Todo가 없습니다.");
+        return;
+    } else {
+        const printedTodos = todos.map((todo) => formatTodo(todo));
+        console.log(printedTodos.join('\n'));
+    }
+}
+
+// 목록 출력 시 포맷팅 함수
+function formatTodo(todo) {
+    return `[${todo.done ? ' ' : 'x'}] ${todo.id}. ${todo.content}`;
 }

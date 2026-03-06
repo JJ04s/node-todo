@@ -46,6 +46,11 @@ switch (command) {
         const id = input[1];
         done(id);
         break;
+    case 'update':
+        const updateId = input[1];
+        const updatedTodo = input.slice(2).join(' ');
+        update(updateId, updatedTodo);
+        break;
 
 }
 
@@ -88,6 +93,21 @@ function done(id) {
         todos[index].done = true;
         fs.writeFileSync(filePath, JSON.stringify(todos, null, 2));
         console.log(`ID ${id}번 항목이 완료되었습니다.`);
+        return;
+    }
+}
+
+// 수정 함수
+function update(id, newTodo) {
+    const index = todos.findIndex((todo) => todo.id === parseInt(id));
+
+    if (index === -1) {
+        console.log("해당 ID를 찾을 수 없습니다.");
+        return;
+    } else {
+        todos[index].content = newTodo;
+        fs.writeFileSync(filePath, JSON.stringify(todos, null, 2));
+        console.log(`ID ${id}번 항목이 수정되었습니다.`);
         return;
     }
 }

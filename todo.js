@@ -51,6 +51,8 @@ switch (command) {
         const updatedTodo = input.slice(2).join(' ');
         update(updateId, updatedTodo);
         break;
+    default:
+        console.log("지원하지 않는 명령어 입니다. add, list, done, update 명령어 중 하나를 입력하여 Todo List를 관리해보세요!")
 
 }
 

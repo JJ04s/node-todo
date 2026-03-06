@@ -18,4 +18,23 @@ if (command === 'add') {
 
     fs.writeFileSync('todos.json', JSON.stringify(todos));
     console.log('Todo가 추가되었습니다: ['+text+']');
+} else if (command === 'list') {
+    let todoslist = [];
+    const data = fs.readFileSync('todos.json', 'utf-8');
+    todoslist = JSON.parse(data);
+
+    if (todoslist.length === 0) {
+        console.log('Todo가 없습니다.');
+    } else {
+        while(todoslist.length > 0) {
+            const todo = todoslist.shift();
+            const status = todo.done 
+            if(status === true) {
+                console.log('[x] ' + id.toString() + '. ' + todo.content);
+            }
+            else {
+                console.log('[ ] ' + id.toString() + '. ' + todo.content);
+            }
+        }
+    }
 }

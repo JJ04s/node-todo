@@ -33,6 +33,24 @@ function add_todo(content) {
 
 function list_todos() {
 
+  if (!fs.existsSync(FILE)) {
+    console.log("Todo가 없습니다.");
+    return;
+  }
+
+  const data = fs.readFileSync(FILE, 'utf8');
+  const todos = JSON.parse(data);
+
+  if (todos.length === 0) {
+    console.log("Todo가 없습니다.");
+    return;
+  }
+
+  for (const todo of todos) {
+    const mark = todo.done ? "[x]" : "[ ]";
+    console.log(`${mark} ${todo.id}. ${todo.content}`);
+  }
+
 }
 
 function done_todo(id) {

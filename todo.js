@@ -42,12 +42,31 @@ function addTodo(content) {
     console.log("Todo가 추가되었습니다:", content);
 }
 
+function doneTodo(id) {
+    const targetID = parseInt(id);
+    const todos = readTodos();
+    const todo = todos.find(item => item.id == targetID);
+
+    if (!todo) {
+        console.log("해당 ID를 찾을 수 없습니다");
+        return;
+    }
+
+    todo.done = true;
+    fs.writeFileSync('todos.json', JSON.stringify(todos, null, 2));
+
+    console.log(`ID ${targetID}번 항목이 완료되었습니다.`);
+}
+
 switch (command) {
     case 'list':
         listTodos();
         break;
     case 'add':
         addTodo(param);
+        break;
+    case 'done':
+        doneTodo(param);
         break;
     default:
         console.log("wrong command");

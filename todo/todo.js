@@ -151,10 +151,6 @@ function delete_todo(id) {
 }
 
 
-function print_usage() {
-
-}
-
 
 function main() {
   const command = process.argv[2];
@@ -181,7 +177,7 @@ function main() {
       break;
     }
     default: {
-      print_usage();
+      //
     }
   }
 }

@@ -68,6 +68,21 @@ function listTodos() {
   });
 }
 
+function doneTodo(id) {
+  const todoId = Number(id);
+  const todos = readTodos();
+  const todo = todos.find((item) => item.id === todoId);
+
+  if (!todo) {
+    console.log('해당 ID를 찾을 수 없습니다.');
+    return;
+  }
+
+  todo.done = true;
+  writeTodos(todos);
+  console.log(`ID ${todoId}번 항목이 완료되었습니다.`);
+}
+
 function main() {
   const [, , command, ...args] = process.argv;
 
@@ -78,6 +93,11 @@ function main() {
 
   if (command === 'list') {
     listTodos();
+    return;
+  }
+
+  if (command === 'done') {
+    doneTodo(args[0]);
     return;
   }
 }

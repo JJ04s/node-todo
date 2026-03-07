@@ -48,7 +48,7 @@ function doneTodo(id) {
     const todo = todos.find(item => item.id == targetID);
 
     if (!todo) {
-        console.log("해당 ID를 찾을 수 없습니다");
+        console.log("해당 ID를 찾을 수 없습니다.");
         return;
     }
 
@@ -56,6 +56,21 @@ function doneTodo(id) {
     fs.writeFileSync('todos.json', JSON.stringify(todos, null, 2));
 
     console.log(`ID ${targetID}번 항목이 완료되었습니다.`);
+}
+
+function deleteTodo(id) {
+    const targetID = parseInt(id);
+    let todos = readTodos();
+
+    const length = todos.length;
+    todos = todos.filter(item => item.id !== targetID);
+    if (todos.length === length) {
+        console.log("해당 ID를 찾을 수 없습니다.");
+        return;
+    }
+
+    fs.writeFileSync('todos.json', JSON.stringify(todos, null, 2));
+    console.log(`ID ${targetID}번 항목이 삭제되었습니다.`);
 }
 
 switch (command) {
@@ -67,6 +82,9 @@ switch (command) {
         break;
     case 'done':
         doneTodo(param);
+        break;
+    case 'delete':
+        deleteTodo(param);
         break;
     default:
         console.log("wrong command");

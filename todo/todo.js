@@ -53,17 +53,103 @@ function list_todos() {
 
 }
 
+function update_todo(id, new_content) {
+
+  if (!new_content) {
+    console.log("새 내용을 입력해주세요.");
+    return;
+  }
+
+  if (!fs.existsSync(FILE)) {
+    console.log("해당 ID를 찾을 수 없습니다.");
+    return;
+  }
+
+  const data = fs.readFileSync(FILE, 'utf8');
+  const todos = JSON.parse(data);
+
+  const numericId = Number(id);
+  let found = false;
+
+  for (const todo of todos) {
+    if (todo.id === numericId) {
+      todo.content = new_content;
+      found = true;
+      break;
+    }
+  }
+
+  if (!found) {
+    console.log("해당 ID를 찾을 수 없습니다.");
+    return;
+  }
+
+  fs.writeFileSync(FILE, JSON.stringify(todos, null, 2));
+  console.log(`ID ${numericId}번 항목이 수정되었습니다.`);
+}
+
+
 function done_todo(id) {
 
+  if (!fs.existsSync(FILE)) {
+    console.log("해당 ID를 찾을 수 없습니다.");
+    return;
+  }
+
+  const data = fs.readFileSync(FILE, 'utf8');
+  const todos = JSON.parse(data);
+
+  const numericId = Number(id);
+  let found = false;
+
+  for (const todo of todos) {
+    if (todo.id === numericId) {
+      todo.done = true;
+      found = true;
+      break;
+    }
+  }
+
+  if (!found) {
+    console.log("해당 ID를 찾을 수 없습니다.");
+    return;
+  }
+
+  fs.writeFileSync(FILE, JSON.stringify(todos, null, 2));
+  console.log(`ID ${numericId}번 항목이 완료되었습니다.`);
 }
 
 function delete_todo(id) {
 
+  if (!fs.existsSync(FILE)) {
+    console.log("해당 ID를 찾을 수 없습니다.");
+    return;
+  }
+
+  const data = fs.readFileSync(FILE, 'utf8');
+  const todos = JSON.parse(data);
+
+  const numericId = Number(id);
+  const newTodos = [];
+  let found = false;
+
+  for (const todo of todos) {
+    if (todo.id === numericId) {
+      found = true;
+      continue;
+    }
+    newTodos.push(todo);
+  }
+
+  if (!found) {
+    console.log("해당 ID를 찾을 수 없습니다.");
+    return;
+  }
+
+  fs.writeFileSync(FILE, JSON.stringify(newTodos, null, 2));
+  console.log(`ID ${numericId}번 항목이 삭제되었습니다.`);
 }
 
-function update_todo(id, new_content) {
-
-}
 
 function print_usage() {
 

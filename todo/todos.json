@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "id": 2,
+    "content": "학교에 가기",
+    "done": false
+  },
+  {
+    "id": 3,
+    "content": "집에서 목욕하기",
+    "done": true
+  }
+]

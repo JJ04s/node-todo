@@ -1,8 +1,9 @@
 {
   "name": "homework",
+  "type": "module",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "todo.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "check:type": "tsc --noEmit",
@@ -15,6 +16,7 @@
   "license": "ISC",
   "devDependencies": {
     "@biomejs/biome": "^2.4.6",
+    "@types/node": "^25.3.5",
     "typescript": "^5.9.3"
   }
 }

@@ -92,13 +92,7 @@
         "noUnsafeDeclarationMerging": "error",
         "useAwait": "error",
         "useGetterReturn": "off",
-        "useNamespaceKeyword": "error",
-        "noConsole": {
-          "options": {
-            "allow": ["warn", "error", "info"]
-          },
-          "level": "error"
-        }
+        "useNamespaceKeyword": "error"
       },
       "style": {
         "noNamespace": "error",

@@ -38,15 +38,22 @@ switch (command) {
         break;
     
     case "done":
-        const targetId = parseInt(args[1]); // 완료 처리할 ID
-        const todoIndex = todos.findIndex(t => t.id === targetId); // 저장된 json 파일에서 인덱스 찾기
+    case "delete":
+        const targetId = parseInt(args[1]); // 완료/삭제 처리할 ID
+        const todoIndex = todos.findIndex(t => t.id === targetId); // 저장된 json 파일에서 인덱스 찾기 (존재하지 않으면 -1)
         if(isNaN(targetId) || todoIndex === -1) {
             console.log("해당 ID를 찾을 수 없습니다.");
         } else {
-            todos[todoIndex].done = true;
+            if(command === "done") {
+                todos[todoIndex].done = true; // 완료 처리
+                console.log("ID %d번 항목이 완료되었습니다.", targetId)
+            } else {
+                todos.splice(todoIndex, 1); // 삭제 처리
+                console.log("ID %d번 항목이 삭제되었습니다.", targetId)
+            }
             fs.writeFileSync('todos.json', JSON.stringify(todos, null, 2));
-            console.log("ID %d번 항목이 완료되었습니다.", targetId)
         }
+        break;
 }
 
 // 문자열이 유효한지 체크하는 함수

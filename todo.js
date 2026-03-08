@@ -1,0 +1,111 @@
+import fs from "node:fs";
+
+const FILE_PATH = "todos.json";
+
+const loadTodos = () => {
+  if (!fs.existsSync(FILE_PATH)) {
+    return [];
+  }
+  const data = fs.readFileSync(FILE_PATH, "utf-8");
+  return JSON.parse(data);
+};
+
+const saveTodos = (todos) => {
+  if (!Array.isArray(todos)) {
+    throw new Error("Todos should be an array");
+  }
+  fs.writeFileSync(FILE_PATH, JSON.stringify(todos, null, 2), "utf-8");
+};
+
+const addTodo = (content) => {
+  const todos = loadTodos();
+  const newTodo = {
+    id: todos.length + 1,
+    content,
+    done: false,
+  };
+  todos.push(newTodo);
+  saveTodos(todos);
+  console.log(`Todo가 추가되었습니다: [${content}]`);
+};
+
+const listTodos = () => {
+  const todos = loadTodos();
+  if (todos.length === 0) {
+    console.log("Todo가 없습니다.");
+    return;
+  }
+  todos.forEach((todo) => {
+    const checkbox = todo.done ? "[x]" : "[ ]";
+    console.log(`${checkbox} ${todo.id}. ${todo.content}`);
+  });
+};
+
+const markTodoAsDone = (id) => {
+  const todos = loadTodos();
+  const targetTodoIndex = todos.findIndex((todo) => todo.id === parseInt(id));
+  if (targetTodoIndex === -1) {
+    console.log("해당 ID를 찾을 수 없습니다.");
+    return;
+  }
+  if (todos[targetTodoIndex].done) {
+    console.log(`ID [${id}]번 항목은 이미 완료되었습니다.`);
+    return;
+  }
+  todos[targetTodoIndex].done = true;
+  saveTodos(todos);
+  console.log(`ID [${id}]번 항목이 완료되었습니다.`);
+};
+
+const deleteTodo = (id) => {
+  const todos = loadTodos();
+  const targetTodoIndex = todos.findIndex((todo) => todo.id === parseInt(id));
+  if (targetTodoIndex === -1) {
+    console.log("해당 ID를 찾을 수 없습니다.");
+    return;
+  }
+  const removedTodo = todos.splice(targetTodoIndex, 1)[0];
+  saveTodos(todos);
+  console.log(`ID [${id}]번 항목이 삭제되었습니다: [${removedTodo.content}]`);
+};
+
+const updateTodo = (id, newContent) => {
+  const todos = loadTodos();
+  const targetTodoIndex = todos.findIndex((todo) => todo.id === parseInt(id));
+  if (targetTodoIndex === -1) {
+    console.log("해당 ID를 찾을 수 없습니다.");
+    return;
+  }
+  todos[targetTodoIndex].content = newContent;
+  saveTodos(todos);
+  console.log(`ID [${id}]번 항목이 업데이트되었습니다: [${newContent}]`);
+};
+
+const [, , command, ...args] = process.argv;
+
+switch (command) {
+  case "add":
+    const content = args.join(" ");
+    addTodo(content);
+    break;
+  case "list":
+    listTodos();
+    break;
+  case "done":
+    const targetID = args[0];
+    markTodoAsDone(targetID);
+    break;
+  case "delete":
+    const deleteID = args[0];
+    deleteTodo(deleteID);
+    break;
+  case "update":
+    const updateID = args[0];
+    const newContent = args.slice(1).join(" ");
+    updateTodo(updateID, newContent);
+    break;
+  default:
+    console.log(
+      "Unknown command. Use 'add', 'list', 'done', 'delete', or 'update'."
+    );
+}

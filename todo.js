@@ -1,0 +1,131 @@
+import fs from 'node:fs';
+
+const FILE_NAME = "todos.json"
+
+// read file, if none, return []
+function read_todos() {
+    try {
+        const data = fs.readFileSync(FILE_NAME, 'utf-8');
+        return JSON.parse(data);
+    } catch {
+        return [];
+    }
+}
+
+// write file 
+function write_todos(todos){
+    fs.writeFileSync(FILE_NAME, JSON.stringify(todos, null, 2));
+}
+
+/* 
+TODO list 추가
+추가된 Todo는 고유 ID(1부터 순차 증가)
+추가 후 "Todo가 추가되었습니다: [내용]" 출력
+*/
+
+function add_todo(content){
+
+    const todos = read_todos();
+
+    const add_id = todos.length === 0 ? 1 : Math.max(...todos.map(todo => todo.id)) + 1;
+
+    todos.push({ id: add_id, "content": content, done: false });
+    write_todos(todos);
+
+    console.log(`Todo가 추가되었습니다: ${content}`);
+}
+
+/* 
+TODO list 조회
+출력 형식은 [ ] 1. 장보기
+완료된 항목은 [x]
+Todo가 없으면 "Todo가 없습니다."
+*/
+function list_todo(){
+
+    const todos = read_todos();
+
+    if (todos.length === 0) {
+        console.log(`Todo가 없습니다.`);
+        return
+    }
+
+    todos.forEach(todo => {
+        const box = todo.done ? `[x]` : `[ ]`;
+        console.log(`${box} ${todo.id}. ${todo.content}`);
+    })
+}
+
+/*
+완료 처리
+done [ID] 명령
+처리 후 "[ID]번 항목이 완료되었습니다." 메시지 출력
+존재하지 않는 ID의 경우 "해당 ID를 찾을 수 없습니다." 출력
+*/
+function done_todo(id){
+    const todos = read_todos();
+    const target = todos.find(todo => todo.id === Number(id));
+
+    if (!target) {
+        console.log(`해당 ID를 찾을 수 없습니다.`);
+        return;
+    }
+
+    target.done = true;
+    write_todos(todos);
+    console.log(`${id}번 항목이 완료되었습니다.`);
+}
+
+/*
+삭제 기능
+delete [ID]
+*/
+
+function delete_todo(id){
+    const todos = read_todos();
+    const remain = todos.filter(todo => todo.id !== Number(id));
+// id가 없을 경우
+    if (remain.length === todos.length) {
+        console.log(`해당 ID를 찾을 수 없습니다.`);
+        return;
+    }
+
+    const reindex = remain.map((todo, index) => ({ ...todo,
+        id: index +1}));
+
+    write_todos(reindex);
+    console.log(`${id}번 항목이 삭제되었습니다.`);
+
+}
+
+/*
+내용 변경 기능
+update [ID] "새 내용" 명령으로 내용 수정
+*/
+function update_todo(id, content){
+    const todos = read_todos();
+    const target = todos.find(todo => todo.id === Number(id));
+
+    if (!target) {
+        console.log(`해당 ID를 찾을 수 없습니다.`);
+        return;
+    }
+
+    target.content = content;
+    write_todos(todos);
+    console.log(`${id}번 항목이 수정되었습니다.`);
+}
+
+const commands = {
+    add: add_todo,
+    list: list_todo,
+    done: done_todo,
+    delete: delete_todo,
+    update: update_todo,
+};
+  
+const command = process.argv[2];
+const id = process.argv[3];
+const content = process.argv[4];
+  
+commands[command]?.(id, content);

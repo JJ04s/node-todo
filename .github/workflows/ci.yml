@@ -21,4 +21,4 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Check
-        run: npm run check-type
+        run: npm run check-all

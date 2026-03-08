@@ -27,12 +27,24 @@ function addTodo(content) {
   console.log(`Todo가 추가되었습니다: ${content}`);
 }
 
+// listTodos() — todo 불러오기, 빈 경우 처리
+function listTodos() {
+    const todos = loadTodos();
+    if (todos.length === 0) {
+      console.log('Todo가 없습니다.');
+      return;
+    }
+    todos.forEach(todo => { // 하나씩 출력
+      const check = todo.done ? '[x]' : '[ ]';
+      console.log(`${check} ${todo.id}. ${todo.content}`);
+    });
+}
+
 // 분기
 if (command === 'add') { // todo 추가 함수
     addTodo(args[1]); // 뒷 부분
-    // 나중에 채울 것
   } else if (command === 'list') { // 목록 출력 함수
-    // 나중에 채울 것
+    listTodos();
   } else if (command === 'done') { // 완료 처리 함수
     // 나중에 채울 것
   } else {

@@ -26,7 +26,19 @@ const addTodo = (content) => {
   };
   todos.push(newTodo);
   saveTodos(todos);
-  console.log(`Todo가 추가되었습니다: [${title}]`);
+  console.log(`Todo가 추가되었습니다: [${content}]`);
+};
+
+const listTodos = () => {
+  const todos = loadTodos();
+  if (todos.length === 0) {
+    console.log("Todo가 없습니다.");
+    return;
+  }
+  todos.forEach((todo) => {
+    const checkbox = todo.done ? "[x]" : "[ ]";
+    console.log(`${checkbox} ${todo.id}. ${todo.content}`);
+  });
 };
 
 const [, , command, ...args] = process.argv;
@@ -36,7 +48,7 @@ switch (command) {
     // TODO: addTodo()
     break;
   case "list":
-    // TODO: listTodos()
+    listTodos();
     break;
   case "done":
     // TODO: markTodoAsDone()

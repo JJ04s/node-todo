@@ -25,7 +25,8 @@ switch (command) {
     case "delete":
     case "update":
         const targetId = parseInt(args[1]); // 완료/삭제/수정 처리할 ID
-        processTodo(targetId, command);
+        const newTask = args[2] || ""; // 새로운 할 일 내용
+        processTodo(targetId, command, newTask);
         break;
     
     default:
@@ -65,7 +66,7 @@ function listTodos(){
         }
 }
 
-function processTodo(targetId, command){
+function processTodo(targetId, command, newTask=""){
     const todoIndex = todos.findIndex(t => t.id === targetId); // 저장된 json 파일에서 인덱스 찾기 (존재하지 않으면 -1)
         if(isNaN(targetId) || todoIndex === -1) {
             console.log("해당 ID를 찾을 수 없습니다.");
@@ -77,7 +78,6 @@ function processTodo(targetId, command){
                 todos.splice(todoIndex, 1); // 삭제 처리
                 console.log("ID %d번 항목이 삭제되었습니다.", targetId);
             } else {
-                const newTask = args[2]; // 새로운 할 일 내용
                 if(!isEmpty(newTask)) {
                     todos[todoIndex].content = newTask; // 내용 수정
                     console.log("ID %d번 항목이 수정되었습니다: %s", targetId, newTask);

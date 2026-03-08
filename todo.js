@@ -13,9 +13,10 @@ const todos = JSON.parse(fs.readFileSync('todos.json', 'utf-8') || "[]"); // tod
 switch (command) {
     case "add":
         const task = args[1]; // 할 일 내용
+        const nextId = todos.length > 0 ? Math.max(...todos.map((x) => x.id)) + 1 : 1
         if(!isEmpty(task)) {
             const data = {
-                id: todos.length + 1,
+                id: nextId,
                 content: task,
                 done: false
             };
@@ -23,6 +24,7 @@ switch (command) {
             fs.writeFileSync('todos.json', JSON.stringify(todos, null, 2)); // JSON으로 인코딩해서 todos.json에 저장
             console.log("Todo가 추가되었습니다: %s", task)
         }
+        break;
     
     case "list":
         if(todos.length === 0) {
@@ -32,6 +34,18 @@ switch (command) {
                 let todoDone = todo.done ? ' ' : 'x'; // 완료되지 않은 할 일에 대해서만 'x' 저장
                 console.log("[%s] %s. %s", todoDone, todo.id, todo.content); // todo 리스트 출력
             });
+        }
+        break;
+    
+    case "done":
+        const targetId = parseInt(args[1]); // 완료 처리할 ID
+        const todoIndex = todos.findIndex(t => t.id === targetId); // 저장된 json 파일에서 인덱스 찾기
+        if(isNaN(targetId) || todoIndex === -1) {
+            console.log("해당 ID를 찾을 수 없습니다.");
+        } else {
+            todos[todoIndex].done = true;
+            fs.writeFileSync('todos.json', JSON.stringify(todos, null, 2));
+            console.log("ID %d번 항목이 완료되었습니다.", targetId)
         }
 }
 

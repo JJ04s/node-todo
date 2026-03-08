@@ -80,8 +80,27 @@ function deleteTodo(id) {
     console.log(`ID ${id}번 항목이 삭제되었습니다.`);
 }
 
-function updateTodo(){
+function updateTodo(id, newContent) {
+    const data = fs.readFileSync('todos.json', 'utf8');
+    const todos = JSON.parse(data);
 
+    let isUpdated = false;
+
+    const updatedTodos = todos.map(todo => {
+        if (todo.id === Number(id)) {
+            isUpdated = true;
+            return { ...todo, content: newContent };
+        }
+        return todo;
+    });
+
+    if (!isUpdated) {
+        console.log("해당 ID를 찾을 수 없습니다.");
+        return;
+    }
+
+    fs.writeFileSync('todos.json', JSON.stringify(updatedTodos, null, 2));
+    console.log(`ID ${id}번 항목의 내용이 수정되었습니다.`);
 }
 
 function main(){
@@ -108,7 +127,7 @@ function main(){
         }
 
         case 'update' :{
-
+            updateTodo(content, process.argv[4]);
         }
         default:{
 

@@ -139,34 +139,27 @@ function clearTodos() {
 function main() {
   const [, , command, ...args] = process.argv;
 
-  if (command === 'add') {
-    addTodo(args.join(' '));
-    return;
-  }
-
-  if (command === 'list') {
-    listTodos();
-    return;
-  }
-
-  if (command === 'done') {
-    doneTodo(args[0]);
-    return;
-  }
-
-  if (command === 'delete') {
-    deleteTodo(args[0]);
-    return;
-  }
-
-  if (command === 'update') {
-    updateTodo(args[0], args.slice(1).join(' '));
-    return;
-  }
-
-  if (command === 'clear') {
-    clearTodos();
-    return;
+  switch (command) {
+    case 'add':
+      addTodo(args.join(' '));
+      return;
+    case 'list':
+      listTodos();
+      return;
+    case 'done':
+      doneTodo(args[0]);
+      return;
+    case 'delete':
+      deleteTodo(args[0]);
+      return;
+    case 'update':
+      updateTodo(args[0], args.slice(1).join(' '));
+      return;
+    case 'clear':
+      clearTodos();
+      return;
+    default:
+      return;
   }
 }
 

@@ -41,6 +41,18 @@ const listTodos = () => {
   });
 };
 
+const markTodoAsDone = (id) => {
+  const todos = loadTodos();
+  const targetTodoIndex = todos.findIndex((todo) => todo.id === parseInt(id));
+  if (targetTodoIndex === -1) {
+    console.log("해당 ID를 찾을 수 없습니다.");
+    return;
+  }
+  todos[targetTodoIndex].done = true;
+  saveTodos(todos);
+  console.log(`ID [${id}]번 항목이 완료되었습니다.`);
+};
+
 const [, , command, ...args] = process.argv;
 
 switch (command) {

@@ -1,21 +1,11 @@
 [
   {
     "id": 1,
-    "content": "장보기",
-    "done": false
-  },
-  {
-    "id": 2,
-    "content": "운동하기",
-    "done": true
-  },
-  {
-    "id": 3,
     "content": "과제",
     "done": true
   },
   {
-    "id": 4,
+    "id": 2,
     "content": "과제",
     "done": false
   }

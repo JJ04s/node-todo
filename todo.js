@@ -69,16 +69,19 @@ const [, , command, ...args] = process.argv;
 
 switch (command) {
   case "add":
-    // TODO: addTodo()
+    const content = args.join(" ");
+    addTodo(content);
     break;
   case "list":
     listTodos();
     break;
   case "done":
-    // TODO: markTodoAsDone()
+    const targetID = args[0];
+    markTodoAsDone(targetID);
     break;
   case "delete":
-    // TODO: deleteTodo()
+    const deleteID = args[0];
+    deleteTodo(deleteID);
     break;
   default:
     console.log("Unknown command. Use 'add', 'list', 'done', or 'delete'.");

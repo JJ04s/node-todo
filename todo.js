@@ -38,11 +38,28 @@ function listTodo() {
     });
 }
 
-function doneTodo(){
+function doneTodo(id){
+    const data = fs.readFileSync('todos.json', 'utf8');
+    const todos = JSON.parse(data);
+    if(id > todos.length){
+        console.log('해당 ID를 찾을 수 없습니다');
+        return;
+    }
+
+    for (const todo of todos) {
+        if (todo.id === Number(id)) {
+            todo.done = true;
+            found = true;
+            break;
+        }
+    }
+
+    fs.writeFileSync('todos.json', JSON.stringify(todos, null, 2));
+    console.log(`ID ${id}번 항목이 완료되었습니다.`);
 
 }
 
-function deleteTodo(){
+function deleteTodo(id){
 
 }
 
@@ -64,11 +81,13 @@ function main(){
         }
 
         case 'done' :{
-            
+            doneTodo(content);
+            break;
         }
 
         case 'delete' :{
-
+            deleteTodo(content);
+            break;
         }
 
         case 'update' :{

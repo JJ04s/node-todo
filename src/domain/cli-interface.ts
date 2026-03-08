@@ -1,17 +1,15 @@
-import type { CLI_DETAILED_ERROR } from './cli-detailed-error.js';
-import type { CLI_STATE } from './cli-state.js';
+import type { RepositoryResponseType } from './response-type.js';
+
+type CliRepositorySuccessResponse =
+  | { state: 'HELP' | 'READ_TODOS' }
+  | { state: 'ADD_TODO'; content: string }
+  | { state: 'UPDATE_DONE' | 'DELETE'; id: number }
+  | { state: 'UPDATE'; id: number; newContent: string };
 
 export type CliRepository = {
-  parseCommand: () =>
-    | {
-        state: Exclude<CLI_STATE, 'ERROR'>;
-      }
-    | {
-        state: 'ERROR';
-        detailedError: CLI_DETAILED_ERROR;
-      };
+  parseCommand: () => RepositoryResponseType<CliRepositorySuccessResponse>;
 };
 
 export type CliPresenter = {
-  showCliCommand: () => void;
+  run: () => void;
 };

@@ -69,6 +69,18 @@ const deleteTodo = (id) => {
   console.log(`ID [${id}]번 항목이 삭제되었습니다: [${removedTodo.content}]`);
 };
 
+const updateTodo = (id, newContent) => {
+  const todos = loadTodos();
+  const targetTodoIndex = todos.findIndex((todo) => todo.id === parseInt(id));
+  if (targetTodoIndex === -1) {
+    console.log("해당 ID를 찾을 수 없습니다.");
+    return;
+  }
+  todos[targetTodoIndex].content = newContent;
+  saveTodos(todos);
+  console.log(`ID [${id}]번 항목이 업데이트되었습니다: [${newContent}]`);
+};
+
 const [, , command, ...args] = process.argv;
 
 switch (command) {
@@ -87,6 +99,13 @@ switch (command) {
     const deleteID = args[0];
     deleteTodo(deleteID);
     break;
+  case "update":
+    const updateID = args[0];
+    const newContent = args.slice(1).join(" ");
+    updateTodo(updateID, newContent);
+    break;
   default:
-    console.log("Unknown command. Use 'add', 'list', 'done', or 'delete'.");
+    console.log(
+      "Unknown command. Use 'add', 'list', 'done', 'delete', or 'update'."
+    );
 }

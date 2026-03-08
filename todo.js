@@ -23,6 +23,16 @@ switch (command) {
             fs.writeFileSync('todos.json', JSON.stringify(todos, null, 2)); // JSON으로 인코딩해서 todos.json에 저장
             console.log("Todo가 추가되었습니다: %s", task)
         }
+    
+    case "list":
+        if(todos.length === 0) {
+            console.log("Todo가 없습니다.");
+        } else {
+            todos.forEach(todo => {
+                let todoDone = todo.done ? ' ' : 'x'; // 완료되지 않은 할 일에 대해서만 'x' 저장
+                console.log("[%s] %s. %s", todoDone, todo.id, todo.content); // todo 리스트 출력
+            });
+        }
 }
 
 // 문자열이 유효한지 체크하는 함수

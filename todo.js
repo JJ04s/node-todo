@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const readline = require('readline');
 
 const TODOS_FILE = path.join(__dirname, 'todos.json');
 
@@ -17,7 +18,7 @@ function readTodos() {
     const parsed = JSON.parse(raw);
     return Array.isArray(parsed) ? parsed : [];
   } catch (error) {
-    console.error('todos.json 파일 형식이 올바르지 않습니다.');
+    console.error('todos.json 파일에 문제가 있습니다.');
     process.exit(1);
   }
 }
@@ -109,13 +110,30 @@ function updateTodo(id, newContent) {
   }
 
   if (!newContent || !newContent.trim()) {
-    console.log('새 내용을 입력하세요.');
+    console.log('수정할 Todo 내용을 입력하세요.');
     return;
   }
 
   todo.content = newContent.trim();
   writeTodos(todos);
   console.log(`ID ${todoId}번 항목이 수정되었습니다.`);
+}
+
+function clearTodos() {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+
+  rl.question('Todo 목록을 초기화하시겠습니까? [y/n] ', (answer) => {
+    if (answer.trim().toLowerCase() === 'y') {
+      writeTodos([]);
+      console.log('Todo 목록이 초기화되었습니다.');
+    } else {
+      console.log('Todo 목록 초기화를 취소했습니다.');
+    }
+    rl.close();
+  });
 }
 
 function main() {
@@ -143,6 +161,11 @@ function main() {
 
   if (command === 'update') {
     updateTodo(args[0], args.slice(1).join(' '));
+    return;
+  }
+
+  if (command === 'clear') {
+    clearTodos();
     return;
   }
 }

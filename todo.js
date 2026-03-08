@@ -88,7 +88,30 @@ if (command === 'delete') {
         console.log(`Task ID${targetId} not found`);
     } else {
         const newFileJson = fileJson.filter(t => t.id !== targetId);
-        fs.writeFileSync(FILE_TODO, JSON.stringify(fileJson, null, 2));
+        fs.writeFileSync(FILE_TODO, JSON.stringify(newFileJson, null, 2));
         console.log(`Task ${target.id}: "${target.content}" deleted.`);
+    }
+}
+
+if (command === 'update') {
+    const targetId = parseInt(args[1]);
+    const newContent = args.slice(2).join('');
+    
+    if (!targetId) {
+        console.log('No task ID provided.');
+        process.exit(1);
+    }
+
+    const fileJson = getData();
+    const target = fileJson.find(t => t.id === targetId);
+
+    if (!target) {
+        console.log(`Task ID${targetId} not found`);
+    } else {
+        target.content = newContent;
+        target.done = false;
+
+        fs.writeFileSync(FILE_TODO, JSON.stringify(fileJson, null, 2));
+        console.log(`Task ${target.id}: updated to "${target.content}".`);
     }
 }

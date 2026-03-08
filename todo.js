@@ -53,6 +53,18 @@ const markTodoAsDone = (id) => {
   console.log(`ID [${id}]번 항목이 완료되었습니다.`);
 };
 
+const deleteTodo = (id) => {
+  const todos = loadTodos();
+  const targetTodoIndex = todos.findIndex((todo) => todo.id === parseInt(id));
+  if (targetTodoIndex === -1) {
+    console.log("해당 ID를 찾을 수 없습니다.");
+    return;
+  }
+  const removedTodo = todos.splice(targetTodoIndex, 1)[0];
+  saveTodos(todos);
+  console.log(`ID [${id}]번 항목이 삭제되었습니다: [${removedTodo.content}]`);
+};
+
 const [, , command, ...args] = process.argv;
 
 switch (command) {

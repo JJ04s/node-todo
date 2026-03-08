@@ -83,6 +83,21 @@ function doneTodo(id) {
   console.log(`ID ${todoId}번 항목이 완료되었습니다.`);
 }
 
+function deleteTodo(id) {
+  const todoId = Number(id);
+  const todos = readTodos();
+  const targetIndex = todos.findIndex((item) => item.id === todoId);
+
+  if (targetIndex === -1) {
+    console.log('해당 ID를 찾을 수 없습니다.');
+    return;
+  }
+
+  todos.splice(targetIndex, 1);
+  writeTodos(todos);
+  console.log(`ID ${todoId}번 항목이 삭제되었습니다.`);
+}
+
 function main() {
   const [, , command, ...args] = process.argv;
 
@@ -98,6 +113,11 @@ function main() {
 
   if (command === 'done') {
     doneTodo(args[0]);
+    return;
+  }
+
+  if (command === 'delete') {
+    deleteTodo(args[0]);
     return;
   }
 }

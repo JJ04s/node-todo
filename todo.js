@@ -55,7 +55,10 @@ function doneTodo(id) {
   const todos = loadTodos();
   const index = todos.findIndex(todo => todo.id === targetId);
   
-  
+  if (index === -1) {
+    console.log("해당 ID를 찾을 수 없습니다.");
+    return;
+  }
   
   todos[index].done = true;
   saveTodos(todos);
@@ -81,14 +84,17 @@ function deleteTodo(id) {
 function updateTodo(id, newContent) {
   const targetId = parseInt(id, 10);
   if (!newContent) {
-    console.log("새 내용을 입력해주세요. ");
+    console.log("새 내용을 입력해주세요.");
     return;
   }
 
   const todos = loadTodos();
   const index = todos.findIndex(todo => todo.id === targetId);
   
-  
+  if (index === -1) {
+    console.log("해당 ID를 찾을 수 없습니다.");
+    return;
+  }
   
   todos[index].content = newContent;
   saveTodos(todos);

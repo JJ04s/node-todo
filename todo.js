@@ -23,11 +23,6 @@ function saveTodos(todos) {
 }
 
 function addTodo(content) {
-  if (!content) {
-    console.log("할 일 내용을 입력해주세요. (예: node todo.js add \"장보기\")");
-    return;
-  }
-  
   const todos = loadTodos();
   const newId = todos.length > 0 ? Math.max(...todos.map(t => t.id)) + 1 : 1;
   
@@ -51,16 +46,17 @@ function listTodos() {
 }
 
 function doneTodo(id) {
-  const targetId = parseInt(id, 10);
   const todos = loadTodos();
-  const index = todos.findIndex(todo => todo.id === targetId);
+  const targetId = parseInt(id, 10);
   
-  if (index === -1) {
+  const todo = todos.find(t => t.id === targetId);
+  
+  if (!todo) {
     console.log("해당 ID를 찾을 수 없습니다.");
     return;
   }
   
-  todos[index].done = true;
+  todo.done = true;
   saveTodos(todos);
   console.log(`ID ${targetId}번 항목이 완료되었습니다.`);
 }
@@ -82,50 +78,44 @@ function deleteTodo(id) {
 }
 
 function updateTodo(id, newContent) {
-  const targetId = parseInt(id, 10);
-  if (!newContent) {
-    console.log("새 내용을 입력해주세요. (예: node todo.js update 1 \"새 내용\")");
-    return;
-  }
-
   const todos = loadTodos();
-  const index = todos.findIndex(todo => todo.id === targetId);
+  const targetId = parseInt(id, 10);
   
-  if (index === -1) {
+  const todo = todos.find(t => t.id === targetId);
+  
+  if (!todo) {
     console.log("해당 ID를 찾을 수 없습니다.");
     return;
   }
   
-  todos[index].content = newContent;
+  todo.content = newContent;
   saveTodos(todos);
-  console.log(`ID ${targetId}번 항목이 수정되었습니다.`);
+  console.log(`ID ${targetId}번 항목의 내용이 변경되었습니다.`);
 }
 
-function main() {
-  const command = process.argv[2];
-  const arg1 = process.argv[3];
-  const arg2 = process.argv[4];
+const args = process.argv.slice(2);
+const command = args[0];
 
-  switch (command) {
-    case 'add':
-      addTodo(arg1);
-      break;
-    case 'list':
-      listTodos();
-      break;
-    case 'done':
-      doneTodo(arg1);
-      break;
-    case 'delete':
-      deleteTodo(arg1);
-      break;
-    case 'update':
-      updateTodo(arg1, arg2);
-      break;
-    default:
-      console.log("사용 가능한 명령어: add, list, done, delete, update");
-      break;
-  }
+switch (command) {
+  case 'add':
+    if (args[1]) addTodo(args[1]);
+    else console.log("내용을 입력해주세요. 예) node todo.js add \"장보기\"");
+    break;
+  case 'list':
+    listTodos();
+    break;
+  case 'done':
+    if (args[1]) doneTodo(args[1]);
+    else console.log("ID를 입력해주세요. 예) node todo.js done 1");
+    break;
+  case 'delete':
+    if (args[1]) deleteTodo(args[1]);
+    else console.log("ID를 입력해주세요. 예) node todo.js delete 1");
+    break;
+  case 'update':
+    if (args[1] && args[2]) updateTodo(args[1], args[2]);
+    else console.log("ID와 변경할 내용을 입력해주세요. 예) node todo.js update 1 \"새 내용\"");
+    break;
+  default:
+    console.log("지원하지 않는 명령어입니다. 지원 명령어: add, list, done, delete, update");
 }
-
-main();

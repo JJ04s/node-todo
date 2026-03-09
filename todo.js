@@ -24,7 +24,7 @@ function saveTodos(todos) {
 
 function addTodo(content) {
   if (!content) {
-    console.log("할 일 내용을 입력해주세요.");
+    console.log("할 일 내용을 입력해주세요. (예: node todo.js add \"장보기\")");
     return;
   }
   
@@ -84,7 +84,7 @@ function deleteTodo(id) {
 function updateTodo(id, newContent) {
   const targetId = parseInt(id, 10);
   if (!newContent) {
-    console.log("새 내용을 입력해주세요.");
+    console.log("새 내용을 입력해주세요. (예: node todo.js update 1 \"새 내용\")");
     return;
   }
 

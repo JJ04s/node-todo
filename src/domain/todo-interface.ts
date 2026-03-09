@@ -1,5 +1,18 @@
-import type { UseCaseResponseType } from '../domain/response-type.js';
-import type { Todo } from './file-interface.js';
+import type {
+  RepositoryResponseType,
+  UseCaseResponseType,
+} from './response-type.js';
+
+export type Todo = {
+  id: number;
+  content: string;
+  done: boolean;
+};
+
+export type TodoRepository = {
+  readTodos: () => RepositoryResponseType<Todo[]>;
+  writeTodos: ({ todos }: { todos: Todo[] }) => RepositoryResponseType<void>;
+};
 
 export type TodoUsecase = {
   addTodo: ({ content }: { content: string }) => UseCaseResponseType<void>;

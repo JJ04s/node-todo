@@ -113,8 +113,11 @@ function main() {
     case 'delete':
       deleteTodo(arg1);
       break;
-    default:
+    case 'update':
       updateTodo(arg1, arg2);
+      break;
+    default:
+      console.log("사용 가능한 명령어: add, list, done, delete, update");
       break;
   }
 }

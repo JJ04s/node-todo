@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "text": "JS Study",
+    "completed": true
+  },
+  {
+    "id": 2,
+    "text": "HTML Study",
+    "completed": false
+  },
+  {
+    "id": 3,
+    "text": "CSS Study",
+    "completed": false
+  }
+]
